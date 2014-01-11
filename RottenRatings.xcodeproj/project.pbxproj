@@ -1,0 +1,344 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		52DCC23E1881AB54005E045F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DCC23D1881AB53005E045F /* Foundation.framework */; };
+		52DCC2491881AB54005E045F /* RottenRatings.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52DCC2481881AB54005E045F /* RottenRatings.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		52DCC23A1881AB53005E045F /* RottenRatings.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = RottenRatings.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		52DCC23D1881AB53005E045F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		52DCC2421881AB54005E045F /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
+		52DCC2431881AB54005E045F /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
+		52DCC2451881AB54005E045F /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
+		52DCC2461881AB54005E045F /* RottenRatings-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RottenRatings-Prefix.pch"; sourceTree = "<group>"; };
+		52DCC2471881AB54005E045F /* RottenRatings.xm */ = {isa = PBXFileReference; lastKnownFileType = text; path = RottenRatings.xm; sourceTree = "<group>"; };
+		52DCC2481881AB54005E045F /* RottenRatings.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RottenRatings.mm; sourceTree = "<group>"; };
+		52DCC24D1881AB54005E045F /* RottenRatings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = RottenRatings.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/RottenRatings.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		52DCC2361881AB53005E045F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52DCC23E1881AB54005E045F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		52DCC22F1881AB53005E045F = {
+			isa = PBXGroup;
+			children = (
+				52DCC23F1881AB54005E045F /* RottenRatings */,
+				52DCC23C1881AB53005E045F /* Frameworks */,
+				52DCC23B1881AB53005E045F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		52DCC23B1881AB53005E045F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC23A1881AB53005E045F /* RottenRatings.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		52DCC23C1881AB53005E045F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC23D1881AB53005E045F /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		52DCC23F1881AB54005E045F /* RottenRatings */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC2471881AB54005E045F /* RottenRatings.xm */,
+				52DCC2481881AB54005E045F /* RottenRatings.mm */,
+				52DCC2401881AB54005E045F /* Package */,
+				52DCC2441881AB54005E045F /* Supporting Files */,
+			);
+			path = RottenRatings;
+			sourceTree = "<group>";
+		};
+		52DCC2401881AB54005E045F /* Package */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC2411881AB54005E045F /* DEBIAN */,
+				52DCC24A1881AB54005E045F /* Library */,
+			);
+			name = Package;
+			sourceTree = "<group>";
+		};
+		52DCC2411881AB54005E045F /* DEBIAN */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC2421881AB54005E045F /* control.txt */,
+				52DCC2431881AB54005E045F /* control */,
+			);
+			name = DEBIAN;
+			sourceTree = "<group>";
+		};
+		52DCC2441881AB54005E045F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC2451881AB54005E045F /* PackageVersion.plist */,
+				52DCC2461881AB54005E045F /* RottenRatings-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		52DCC24A1881AB54005E045F /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC24B1881AB54005E045F /* MobileSubstrate */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		52DCC24B1881AB54005E045F /* MobileSubstrate */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC24C1881AB54005E045F /* DynamicLibraries */,
+			);
+			name = MobileSubstrate;
+			sourceTree = "<group>";
+		};
+		52DCC24C1881AB54005E045F /* DynamicLibraries */ = {
+			isa = PBXGroup;
+			children = (
+				52DCC24D1881AB54005E045F /* RottenRatings.plist */,
+			);
+			name = DynamicLibraries;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		52DCC2371881AB53005E045F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		52DCC2391881AB53005E045F /* RottenRatings */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52DCC2501881AB54005E045F /* Build configuration list for PBXNativeTarget "RottenRatings" */;
+			buildPhases = (
+				52DCC2341881AB53005E045F /* ShellScript */,
+				52DCC2351881AB53005E045F /* Sources */,
+				52DCC2361881AB53005E045F /* Frameworks */,
+				52DCC2371881AB53005E045F /* Headers */,
+				52DCC2381881AB53005E045F /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RottenRatings;
+			productName = RottenRatings;
+			productReference = 52DCC23A1881AB53005E045F /* RottenRatings.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		52DCC2301881AB53005E045F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+			};
+			buildConfigurationList = 52DCC2331881AB53005E045F /* Build configuration list for PBXProject "RottenRatings" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 52DCC22F1881AB53005E045F;
+			productRefGroup = 52DCC23B1881AB53005E045F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				52DCC2391881AB53005E045F /* RottenRatings */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		52DCC2341881AB53005E045F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp-logos";
+		};
+		52DCC2381881AB53005E045F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		52DCC2351881AB53005E045F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52DCC2491881AB54005E045F /* RottenRatings.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		52DCC24E1881AB54005E045F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(iOSOpenDevPath)/frameworks/**",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Debug;
+		};
+		52DCC24F1881AB54005E045F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(iOSOpenDevPath)/frameworks/**",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Release;
+		};
+		52DCC2511881AB54005E045F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "RottenRatings/RottenRatings-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevBuildPackageOnAnyBuild = NO;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = YES;
+				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Debug;
+		};
+		52DCC2521881AB54005E045F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "RottenRatings/RottenRatings-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevBuildPackageOnAnyBuild = NO;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = YES;
+				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		52DCC2331881AB53005E045F /* Build configuration list for PBXProject "RottenRatings" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52DCC24E1881AB54005E045F /* Debug */,
+				52DCC24F1881AB54005E045F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		52DCC2501881AB54005E045F /* Build configuration list for PBXNativeTarget "RottenRatings" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52DCC2511881AB54005E045F /* Debug */,
+				52DCC2521881AB54005E045F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 52DCC2301881AB53005E045F /* Project object */;
+}

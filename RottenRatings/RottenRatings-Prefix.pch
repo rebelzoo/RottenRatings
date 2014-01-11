@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'RottenRatings' target in the 'RottenRatings' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
