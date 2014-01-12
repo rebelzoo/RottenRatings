@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		52DCC23E1881AB54005E045F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DCC23D1881AB53005E045F /* Foundation.framework */; };
 		52DCC2491881AB54005E045F /* RottenRatings.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52DCC2481881AB54005E045F /* RottenRatings.mm */; };
+		52E1425F18820D0A00EEA7C1 /* libsubstrate.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E1425E18820D0A00EEA7C1 /* libsubstrate.dylib */; };
+		52E142611882313300EEA7C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E142601882313300EEA7C1 /* CoreGraphics.framework */; };
+		52E142631882314E00EEA7C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E142621882314E00EEA7C1 /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,9 +21,12 @@
 		52DCC2431881AB54005E045F /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		52DCC2451881AB54005E045F /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
 		52DCC2461881AB54005E045F /* RottenRatings-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RottenRatings-Prefix.pch"; sourceTree = "<group>"; };
-		52DCC2471881AB54005E045F /* RottenRatings.xm */ = {isa = PBXFileReference; lastKnownFileType = text; path = RottenRatings.xm; sourceTree = "<group>"; };
+		52DCC2471881AB54005E045F /* RottenRatings.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RottenRatings.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52DCC2481881AB54005E045F /* RottenRatings.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RottenRatings.mm; sourceTree = "<group>"; };
 		52DCC24D1881AB54005E045F /* RottenRatings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = RottenRatings.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/RottenRatings.plist; sourceTree = "<group>"; };
+		52E1425E18820D0A00EEA7C1 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = ../../../../opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<group>"; };
+		52E142601882313300EEA7C1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		52E142621882314E00EEA7C1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +34,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52E142631882314E00EEA7C1 /* UIKit.framework in Frameworks */,
+				52E142611882313300EEA7C1 /* CoreGraphics.framework in Frameworks */,
+				52E1425F18820D0A00EEA7C1 /* libsubstrate.dylib in Frameworks */,
 				52DCC23E1881AB54005E045F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,6 +64,9 @@
 		52DCC23C1881AB53005E045F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52E142621882314E00EEA7C1 /* UIKit.framework */,
+				52E142601882313300EEA7C1 /* CoreGraphics.framework */,
+				52E1425E18820D0A00EEA7C1 /* libsubstrate.dylib */,
 				52DCC23D1881AB53005E045F /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -287,13 +299,17 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RottenRatings/RottenRatings-Prefix.pch";
 				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/iOSOpenDev/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
 				iOSOpenDevCopyOnBuild = NO;
-				iOSOpenDevDevice = "";
-				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevDevice = 192.168.1.32;
+				iOSOpenDevInstallOnAnyBuild = YES;
 				iOSOpenDevInstallOnProfiling = YES;
-				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevRespringOnInstall = NO;
 				iOSOpenDevUsePackageVersionPList = YES;
 			};
 			name = Debug;
@@ -307,13 +323,17 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RottenRatings/RottenRatings-Prefix.pch";
 				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/iOSOpenDev/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
 				iOSOpenDevCopyOnBuild = NO;
-				iOSOpenDevDevice = "";
-				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevDevice = 192.168.1.32;
+				iOSOpenDevInstallOnAnyBuild = YES;
 				iOSOpenDevInstallOnProfiling = YES;
-				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevRespringOnInstall = NO;
 				iOSOpenDevUsePackageVersionPList = YES;
 			};
 			name = Release;
@@ -337,6 +357,7 @@
 				52DCC2521881AB54005E045F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
