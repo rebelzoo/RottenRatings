@@ -15,6 +15,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5261968C188352BD00A0D39C /* tomato.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tomato.png; sourceTree = "<group>"; };
+		52969DE0188366EA00A3B5A8 /* RottenRatings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RottenRatings.bundle; path = Package/Library/MobileSubstrate/DynamicLibraries/RottenRatings.bundle; sourceTree = "<group>"; };
 		52DCC23A1881AB53005E045F /* RottenRatings.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = RottenRatings.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		52DCC23D1881AB53005E045F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		52DCC2421881AB54005E045F /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
@@ -44,9 +46,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5261968B188352BD00A0D39C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5261968C188352BD00A0D39C /* tomato.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		52DCC22F1881AB53005E045F = {
 			isa = PBXGroup;
 			children = (
+				5261968B188352BD00A0D39C /* Resources */,
 				52DCC23F1881AB54005E045F /* RottenRatings */,
 				52DCC23C1881AB53005E045F /* Frameworks */,
 				52DCC23B1881AB53005E045F /* Products */,
@@ -129,6 +140,7 @@
 		52DCC24C1881AB54005E045F /* DynamicLibraries */ = {
 			isa = PBXGroup;
 			children = (
+				52969DE0188366EA00A3B5A8 /* RottenRatings.bundle */,
 				52DCC24D1881AB54005E045F /* RottenRatings.plist */,
 			);
 			name = DynamicLibraries;
@@ -302,6 +314,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/opt/iOSOpenDev/lib,
+					/Users/john/Documents/RottenRatings/RottenRatings/Package/Library/MobileSubstrate/DynamicLibraries,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
@@ -326,6 +339,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/opt/iOSOpenDev/lib,
+					/Users/john/Documents/RottenRatings/RottenRatings/Package/Library/MobileSubstrate/DynamicLibraries,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
