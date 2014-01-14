@@ -15,6 +15,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		524342751884CC0900CC3E8E /* RottenRatings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RottenRatings.plist; sourceTree = "<group>"; };
+		524342761884CC0900CC3E8E /* RottenRatingsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RottenRatingsIcon.png; sourceTree = "<group>"; };
+		524342771884CC0900CC3E8E /* RottenRatingsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RottenRatingsIcon@2x.png"; sourceTree = "<group>"; };
 		5261968C188352BD00A0D39C /* tomato.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tomato.png; sourceTree = "<group>"; };
 		52969DE0188366EA00A3B5A8 /* RottenRatings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RottenRatings.bundle; path = Package/Library/MobileSubstrate/DynamicLibraries/RottenRatings.bundle; sourceTree = "<group>"; };
 		52DCC23A1881AB53005E045F /* RottenRatings.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = RottenRatings.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +49,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		524342731884CC0900CC3E8E /* PreferenceLoader */ = {
+			isa = PBXGroup;
+			children = (
+				524342741884CC0900CC3E8E /* Preferences */,
+			);
+			name = PreferenceLoader;
+			path = Package/Library/PreferenceLoader;
+			sourceTree = "<group>";
+		};
+		524342741884CC0900CC3E8E /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				524342751884CC0900CC3E8E /* RottenRatings.plist */,
+				524342761884CC0900CC3E8E /* RottenRatingsIcon.png */,
+				524342771884CC0900CC3E8E /* RottenRatingsIcon@2x.png */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
 		5261968B188352BD00A0D39C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +154,7 @@
 		52DCC24B1881AB54005E045F /* MobileSubstrate */ = {
 			isa = PBXGroup;
 			children = (
+				524342731884CC0900CC3E8E /* PreferenceLoader */,
 				52DCC24C1881AB54005E045F /* DynamicLibraries */,
 			);
 			name = MobileSubstrate;
