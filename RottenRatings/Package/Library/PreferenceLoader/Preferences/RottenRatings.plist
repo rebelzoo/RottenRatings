@@ -19,13 +19,11 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.christmanzoo.RottenRatings</string>
+			<string>com.rebelzoo.RottenRatings</string>
 			<key>key</key>
 			<string>enableSwitch</string>
 			<key>label</key>
 			<string>Enable</string>
-			<key>PostNotification</key>
-			<string>com.christmanzoo.RottenRatings-preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -43,13 +41,11 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.christmanzoo.RottenRatings</string>
+			<string>com.rebelzoo.RottenRatings</string>
 			<key>key</key>
 			<string>enableRottenTomatoes</string>
 			<key>label</key>
 			<string>Tomatometer</string>
-			<key>PostNotification</key>
-			<string>com.christmanzoo.RottenRatings-preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -57,13 +53,11 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.christmanzoo.RottenRatings</string>
+			<string>com.rebelzoo.RottenRatings</string>
 			<key>key</key>
 			<string>enableRottenTomatoesAudience</string>
 			<key>label</key>
 			<string>Audience Score</string>
-			<key>PostNotification</key>
-			<string>com.christmanzoo.RottenRatings-preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -81,13 +75,11 @@
 			<key>default</key>
 			<false/>
 			<key>defaults</key>
-			<string>com.christmanzoo.RottenRatings</string>
+			<string>com.rebelzoo.RottenRatings</string>
 			<key>key</key>
 			<string>enableIMDBrating</string>
 			<key>label</key>
 			<string>Rating</string>
-			<key>PostNotification</key>
-			<string>com.christmanzoo.RottenRatings-preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -95,13 +87,43 @@
 			<key>default</key>
 			<false/>
 			<key>defaults</key>
-			<string>com.christmanzoo.RottenRatings</string>
+			<string>com.rebelzoo.RottenRatings</string>
 			<key>key</key>
 			<string>enableIMDBmeta</string>
 			<key>label</key>
 			<string>Metascore</string>
-			<key>PostNotification</key>
-			<string>com.christmanzoo.RottenRatings-preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
+			<string>Extra</string>
+			<key>footerText</key>
+			<string>Other settings</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.rebelzoo.RottenRatings</string>
+			<key>key</key>
+			<string>showTitle</string>
+			<key>label</key>
+			<string>Show Video Title Text</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>isStaticText</key>
+			<true/>
+			<key>label</key>
+			<string></string>
+			<key>footerText</key>
+			<string>*Close and relaunch Videos App to apply changes</string>
 		</dict>
 	</array>
 	<key>title</key>

@@ -17,12 +17,9 @@
 /* Begin PBXFileReference section */
 		524342751884CC0900CC3E8E /* RottenRatings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RottenRatings.plist; sourceTree = "<group>"; };
 		524342761884CC0900CC3E8E /* RottenRatingsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RottenRatingsIcon.png; sourceTree = "<group>"; };
-		524342771884CC0900CC3E8E /* RottenRatingsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RottenRatingsIcon@2x.png"; sourceTree = "<group>"; };
-		5261968C188352BD00A0D39C /* tomato.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tomato.png; sourceTree = "<group>"; };
 		52969DE0188366EA00A3B5A8 /* RottenRatings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RottenRatings.bundle; path = Package/Library/MobileSubstrate/DynamicLibraries/RottenRatings.bundle; sourceTree = "<group>"; };
 		52DCC23A1881AB53005E045F /* RottenRatings.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = RottenRatings.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		52DCC23D1881AB53005E045F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		52DCC2421881AB54005E045F /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
 		52DCC2431881AB54005E045F /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		52DCC2451881AB54005E045F /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
 		52DCC2461881AB54005E045F /* RottenRatings-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RottenRatings-Prefix.pch"; sourceTree = "<group>"; };
@@ -63,23 +60,13 @@
 			children = (
 				524342751884CC0900CC3E8E /* RottenRatings.plist */,
 				524342761884CC0900CC3E8E /* RottenRatingsIcon.png */,
-				524342771884CC0900CC3E8E /* RottenRatingsIcon@2x.png */,
 			);
 			path = Preferences;
-			sourceTree = "<group>";
-		};
-		5261968B188352BD00A0D39C /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				5261968C188352BD00A0D39C /* tomato.png */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		52DCC22F1881AB53005E045F = {
 			isa = PBXGroup;
 			children = (
-				5261968B188352BD00A0D39C /* Resources */,
 				52DCC23F1881AB54005E045F /* RottenRatings */,
 				52DCC23C1881AB53005E045F /* Frameworks */,
 				52DCC23B1881AB53005E045F /* Products */,
@@ -128,7 +115,6 @@
 		52DCC2411881AB54005E045F /* DEBIAN */ = {
 			isa = PBXGroup;
 			children = (
-				52DCC2421881AB54005E045F /* control.txt */,
 				52DCC2431881AB54005E045F /* control */,
 			);
 			name = DEBIAN;
@@ -342,7 +328,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
 				iOSOpenDevCopyOnBuild = NO;
-				iOSOpenDevDevice = 192.168.1.32;
+				iOSOpenDevDevice = 192.168.1.126;
 				iOSOpenDevInstallOnAnyBuild = YES;
 				iOSOpenDevInstallOnProfiling = YES;
 				iOSOpenDevRespringOnInstall = NO;
@@ -367,7 +353,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
 				iOSOpenDevCopyOnBuild = NO;
-				iOSOpenDevDevice = 192.168.1.32;
+				iOSOpenDevDevice = 192.168.1.126;
 				iOSOpenDevInstallOnAnyBuild = YES;
 				iOSOpenDevInstallOnProfiling = YES;
 				iOSOpenDevRespringOnInstall = NO;

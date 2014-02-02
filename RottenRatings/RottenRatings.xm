@@ -1,47 +1,57 @@
-#define kBundlePath @"/Library/MobileSubstrate/DynamicLibraries/RottenRatings.bundle"
 #include <Videos/VideosArtworkCell.h>
+#include <Videos/VideosMovieDetailCell.h>
+#include <MediaPlayer/MPMediaItem.h>
 #include <UIKit/UIKit.h>
 
-#define PreferencesFilePath [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/com.christmanzoo.RottenRatings.plist"]
+#define kBundlePath @"/Library/MobileSubstrate/DynamicLibraries/RottenRatings.bundle"
+#define PreferencesFilePath [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/com.rebelzoo.RottenRatings.plist"]
 
 static NSDictionary *prefsDict = nil;
+
+static NSMutableDictionary *overlayImages=nil;
+static NSMutableDictionary *rtRatingDictionary=nil;
+static NSMutableDictionary *imdbRatingDictionary=nil;
 
 static void loadPreferences() {
     if(prefsDict==nil)
     {
         prefsDict = [[NSDictionary alloc] initWithContentsOfFile:PreferencesFilePath];
-        //NSLog(@"%@", PreferencesFilePath);
-        //NSLog(@"prefs: %@", prefsDict);
     }
 }
-static void preferenceChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo ) {
-    if(prefsDict!=nil)
-    {
-        [prefsDict release];
-        prefsDict=nil;
+
+static bool getPrefBool(NSString *item, bool defaultValue){
+    id value=[prefsDict objectForKey:item];
+    bool boolValue;
+    if(value!=nil){
+        boolValue = [value boolValue];
+    } else {
+        boolValue = defaultValue;
     }
-    loadPreferences();
+    return boolValue;
 }
 
 static NSData* getDataFromURL(NSString *URL)
 {
-    //NSLog(@"%@", URL);
-    
     int tries = 0;
     NSData* data = nil;
-    while(data==nil && tries < 20)
+    while(data==nil && tries < 1000)
     {
         data = [NSData dataWithContentsOfURL:[NSURL URLWithString:URL]];
         tries++;
+        
+        if(data==nil && tries>3) {
+            //rest a few (Rotten Tomatoes limits calls per second)
+            int wait=(arc4random()%100)*tries;
+            usleep(wait);
+        }
     }
-    
     return data;
 }
 
 struct rottenTomatoRatings
 {
-    NSNumber* critic;
-    NSNumber* audience;
+    float critic;
+    float audience;
 };
 
 static rottenTomatoRatings getRottenTomatoesRating(NSString *title)
@@ -50,35 +60,42 @@ static rottenTomatoRatings getRottenTomatoesRating(NSString *title)
     NSString *URL = @"http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=42z34f7h6erk6de8mmbsrten&page_limit=1&q=";
     URL = [URL stringByAppendingString:query];
     
-    //NSNumber *critic = [NSNumber numberWithInt:-1];
     rottenTomatoRatings rtRatings;
+    rtRatings.critic = 0;
+    rtRatings.audience = 0;
     
-    NSData *data = getDataFromURL(URL);
+    NSData *data=getDataFromURL(URL);
     if(data != nil)
     {
         NSError *e = nil;
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData: data options: NSJSONReadingMutableContainers error:&e];
-        //NSLog(@"%@", json);
         
         if(json != nil)
         {
-            NSArray *movies = (NSArray *)[json objectForKey:@"movies"];
-            if(movies != nil)
-                json = [movies objectAtIndex: 0];
-            else
+            NSNumber *total = [json objectForKey:@"total"];
+            if(![total isEqual:@0]){
+                NSArray *movies = (NSArray *)[json objectForKey:@"movies"];
+                if(movies != nil && [movies count] > 0)
+                    json = [movies objectAtIndex: 0];
+                else
+                    json = nil;
+            }
+            else {
                 json = nil;
+            }
         }
         
         if(json != nil)
         {
-            //NSLog(@"%@", json);
             NSDictionary *ratings = (NSDictionary *)[json objectForKey:@"ratings"];
-            //NSLog(@"%@", ratings);
             if(ratings != nil)
             {
-                //NSLog(@"%@", ratings);
-                rtRatings.critic = [ratings objectForKey:@"critics_score"];
-                rtRatings.audience = [ratings objectForKey:@"audience_score"];
+                rtRatings.critic = [[ratings objectForKey:@"critics_score"] floatValue];
+                rtRatings.audience = [[ratings objectForKey:@"audience_score"] floatValue];
+                
+                if(rtRatingDictionary==nil)
+                    rtRatingDictionary=[[NSMutableDictionary alloc] init];
+                [rtRatingDictionary setValue:[NSValue value:&rtRatings withObjCType:@encode(rottenTomatoRatings)] forKey:title];
             }
         }
     }
@@ -88,8 +105,8 @@ static rottenTomatoRatings getRottenTomatoesRating(NSString *title)
 
 struct imdbRatings
 {
-    NSNumber* Metascore;
-    NSNumber* imdbRating;
+    float Metascore;
+    float imdbRating;
 };
 
 static imdbRatings getImdbRating(NSString *title)
@@ -98,162 +115,346 @@ static imdbRatings getImdbRating(NSString *title)
     NSString *URL = @"http://www.omdbapi.com/?i=&t=";
     URL = [URL stringByAppendingString:query];
     
-    //NSNumber *critic = [NSNumber numberWithInt:-1];
     imdbRatings ratings;
+    ratings.Metascore = 0;
+    ratings.imdbRating = 0;
     
     NSData *data = getDataFromURL(URL);
     if(data != nil)
     {
         NSError *e = nil;
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData: data options: NSJSONReadingMutableContainers error:&e];
-        NSLog(@"%@", json);
         
         if(json != nil)
         {
-            ratings.Metascore = [json objectForKey:@"Metascore"];
-            ratings.imdbRating = [json objectForKey:@"imdbRating"];
-            //NSLog(@"%@", critic);
+            ratings.Metascore = [[json objectForKey:@"Metascore"] floatValue];
+            ratings.imdbRating = [[json objectForKey:@"imdbRating"] floatValue];
+            
+            if(imdbRatingDictionary==nil)
+                imdbRatingDictionary=[[NSMutableDictionary alloc] init];
+            [imdbRatingDictionary setValue:[NSValue value:&ratings withObjCType:@encode(imdbRatings)] forKey:title];
         }
     }
     
     return ratings;
 }
 
+static void beginImageContext(CGSize frameSize){
+    CGFloat scale = 1.0;
+    if([[UIScreen mainScreen]respondsToSelector:@selector(scale)]) {
+        CGFloat tmp = [[UIScreen mainScreen]scale];
+        if(tmp > 1.5) {
+            scale = 2.0;
+        }
+    }
+    if(scale > 1.5) {
+        UIGraphicsBeginImageContextWithOptions(frameSize, NO, scale);
+    }
+    else {
+        UIGraphicsBeginImageContext(frameSize);
+    }
+}
+
+static UIImage* scaleImage(UIImage *image, double scale) {
+    CGSize scaled = CGSizeMake(image.size.width*scale, image.size.height*scale);
+    beginImageContext(scaled);
+    [image drawInRect:CGRectMake(0, 0, scaled.width, scaled.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+
+static UIImage* generateOverlay(NSString *title, bool scaleDown)
+{
+    const int margin = 4;
+    const int padding = 2;
+    float x=margin;
+    
+    UIFont *font = [UIFont fontWithName:@"Arial" size:16];
+    UIFont *titleFont = [UIFont fontWithName:@"Arial" size:12];
+    CGSize titleSize = [title sizeWithAttributes:@{NSFontAttributeName:titleFont}];
+    
+    NSBundle *bundle = [[[NSBundle alloc] initWithPath:kBundlePath] autorelease];
+    NSString *rating=nil;
+    
+    NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
+    shadow.shadowColor = [UIColor blackColor];
+    shadow.shadowBlurRadius = 2.0;
+    shadow.shadowOffset = CGSizeMake(0.0,1.0);
+    
+    bool enableRottenTomatoes = getPrefBool(@"enableRottenTomatoes", YES);
+    bool enableRottenTomatoesAudience = getPrefBool(@"enableRottenTomatoesAudience", NO);
+    bool enableIMDBrating = getPrefBool(@"enableIMDBrating", NO);
+    bool enableIMDBmeta = getPrefBool(@"enableIMDBmeta", NO);
+    bool showTitle = getPrefBool(@"showTitle", NO);
+    
+    rottenTomatoRatings rottenTomatoes;
+    UIImage *tomato=nil;
+    if(enableRottenTomatoes || enableRottenTomatoesAudience)
+    {
+        rottenTomatoes = getRottenTomatoesRating(title);
+        if(rottenTomatoes.critic<=0.0) {
+            enableRottenTomatoes=NO;
+        }
+        
+        if(rottenTomatoes.audience<=0.0) {
+            enableRottenTomatoesAudience=NO;
+        }
+        NSString *imagePath = [bundle pathForResource:@"tomato" ofType:@"png"];
+        tomato = [UIImage imageWithContentsOfFile:imagePath];
+    }
+    
+    imdbRatings imdb;
+    UIImage *imdbPanel=nil;
+    if(enableIMDBrating || enableIMDBmeta)
+    {
+        imdb = getImdbRating(title);
+        
+        if(imdb.imdbRating<=0.0) {
+            enableIMDBrating=NO;
+        }
+        
+        if(imdb.Metascore<=0.0) {
+            enableIMDBmeta=NO;
+        }
+        NSString *imagePath = [bundle pathForResource:@"IMDB" ofType:@"png"];
+        imdbPanel = [UIImage imageWithContentsOfFile:imagePath];
+    }
+    
+    float textY=0;
+    const float FRAME_W = 104;
+    const float FRAME_H = 52;
+    CGSize overlayFrameSize = CGSizeMake(FRAME_W>titleSize.width?FRAME_W:titleSize.width ,FRAME_H); //CGSizeMake(FRAME_W,FRAME_H);
+    
+    beginImageContext(overlayFrameSize);
+    if(UIGraphicsGetCurrentContext()==nil)
+        return nil;
+    
+    if(enableRottenTomatoes || enableRottenTomatoesAudience)
+    {
+        if(enableRottenTomatoes && enableRottenTomatoesAudience){
+            rating = [NSString stringWithFormat:@"%.0f/%.0f", rottenTomatoes.critic, rottenTomatoes.audience];
+        }
+        else {
+            if(enableRottenTomatoes) {
+                rating = [NSString stringWithFormat:@"%.0f%%", rottenTomatoes.critic];
+            }
+            else {
+                rating = [NSString stringWithFormat:@"%.0f%%", rottenTomatoes.audience];
+            }
+        }
+        
+        CGSize textSize = [rating sizeWithAttributes:@{NSFontAttributeName:font}];
+        
+        x+=padding;
+        float y=0;
+        [tomato drawAtPoint:CGPointMake(x,y)];
+        
+        //Rating Text
+        textY=y+(tomato.size.height*2/3 - textSize.height/2);
+        float textX = x + (tomato.size.width/2 - textSize.width/2);
+        if(textX < 0)
+            textX=0;
+        
+        [rating drawAtPoint:CGPointMake(textX, textY)
+             withAttributes:@{NSFontAttributeName:font,
+                              NSForegroundColorAttributeName:[UIColor whiteColor],
+                              NSShadowAttributeName:shadow}];
+        
+        x+=tomato.size.width;
+    }
+    
+    if(enableIMDBrating || enableIMDBmeta)
+    {
+        if(enableIMDBrating && enableIMDBmeta) {
+            rating = [NSString stringWithFormat:@"%.1f/%.0f", imdb.imdbRating, imdb.Metascore];
+        }
+        else {
+            if(enableIMDBrating) {
+                rating = [NSString stringWithFormat:@"%.1f", imdb.imdbRating];
+            }
+            else {
+                rating = [NSString stringWithFormat:@"%.0f%%", imdb.Metascore];
+            }
+        }
+        
+        CGSize textSize = [rating sizeWithAttributes:@{NSFontAttributeName:font}];
+        
+        x+=padding;
+        float y;
+        if(textY > 0.0){
+            y = textY - margin;
+        }
+        else {
+            y = overlayFrameSize.height/2 - imdbPanel.size.height/2;
+            textY = y+margin;
+        }
+        
+        [imdbPanel drawAtPoint:CGPointMake(x,y)];
+        float textX = x + (imdbPanel.size.width/2 - textSize.width/2);
+        if(textX < x)
+            textX=x;
+        
+        //Rating Text
+        shadow.shadowColor = [UIColor whiteColor];
+        [rating drawAtPoint:CGPointMake(textX, textY)
+             withAttributes:@{NSFontAttributeName:font,
+                              NSForegroundColorAttributeName:[UIColor blackColor],
+                              NSShadowAttributeName:shadow}];
+    }
+    
+    //Title Text
+    if(showTitle) {
+        shadow.shadowColor = [UIColor blackColor];
+        [title drawAtPoint:CGPointMake(0,overlayFrameSize.height-titleSize.height)
+            withAttributes:@{NSFontAttributeName:titleFont,
+                             NSForegroundColorAttributeName:[UIColor whiteColor],
+                             NSShadowAttributeName:shadow}];
+    }
+    
+    UIImage *overlayImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //Some scaling for smaller screens
+    if(scaleDown) {
+        overlayImage = scaleImage(overlayImage, 0.65);
+    }
+    
+    [overlayImages setValue:overlayImage forKey:title];
+    
+    return overlayImage;
+}
+
+static UIImage* getOverlayItem(NSString *title, bool scaleDown)
+{
+    UIImage *overlayImage=[overlayImages objectForKey:title];
+    if(overlayImage==nil) {
+        overlayImage=generateOverlay(title, scaleDown);
+    }
+    return overlayImage;
+}
 
 %hook VideosArtworkCell
-- (void)setTitle:(NSString* )title {
-    //%log;
+-(void)setTitle:(NSString* )title {
     %orig;
     
-    loadPreferences();
-    if(![[prefsDict objectForKey:@"enableSwitch"] boolValue])
-        return;
+    if(overlayImages==nil)
+        overlayImages=[[NSMutableDictionary alloc] init];
+        
+        loadPreferences();
+        if(!getPrefBool(@"enableSwitch", YES))
+            return;
     
-    UIImageView* ImageView = self.artworkView;
+    UIImageView *ImageView = self.artworkView;
     if(ImageView==nil)
         return;
     
-    UIImage* img = ImageView.image;
-    UIGraphicsBeginImageContext(img.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    if(context!=nil && img!=nil)
-    {
-        const int margin = 4;
-        const int padding = 2;
-        float x=margin;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //Background Thread
+        const int TAG =0x8284; //"RT"
+        UIImageView *overlay=(UIImageView *)[ImageView viewWithTag:TAG];
+        UIImage *overlayImage=getOverlayItem(title,ImageView.frame.size.width<150.0);
         
-        bool enableRottenTomatoes = [[prefsDict objectForKey:@"enableRottenTomatoes"] boolValue];
-        bool enableRottenTomatoesAudience = [[prefsDict objectForKey:@"enableRottenTomatoesAudience"] boolValue];
-        bool enableIMDBrating = [[prefsDict objectForKey:@"enableIMDBrating"] boolValue];
-        bool enableIMDBmeta = [[prefsDict objectForKey:@"enableIMDBmeta"] boolValue];
-
-        UIFont *font = [UIFont fontWithName:@"Arial" size:16];
-        [img drawInRect:CGRectMake(0.0,0.0,img.size.width, img.size.height)];
-        NSBundle *bundle = [[[NSBundle alloc] initWithPath:kBundlePath] autorelease];
-        NSString *rating=nil;
-
-        NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
-        shadow.shadowColor = [UIColor blackColor];
-        shadow.shadowBlurRadius = 2.0;
-        shadow.shadowOffset = CGSizeMake(0.0,1.0);
-        
-        rottenTomatoRatings rottenTomatoes;
-        if(enableRottenTomatoes || enableRottenTomatoesAudience)
-        {
-            rottenTomatoes = getRottenTomatoesRating(title);
-            if(rottenTomatoes.critic==nil) {
-                enableRottenTomatoes=NO;
+        if(overlay!=nil && overlayImage!=nil) {
+            if(overlay.image==overlayImage){
+                return; //already applied the correct cell, we are done.
             }
-
-            if(rottenTomatoes.audience==nil) {
-                enableRottenTomatoesAudience=NO;
+            else
+            {
+                //Handle changes in virtualization
+                overlay.image=overlayImage;
+                return;
             }
         }
         
-        if(enableRottenTomatoes || enableRottenTomatoesAudience)
-        {
-            if(enableRottenTomatoes && enableRottenTomatoesAudience){
-                rating = [NSString stringWithFormat:@"%@/%@", rottenTomatoes.critic, rottenTomatoes.audience];
-            }
-            else { if(enableRottenTomatoes) {
-                rating = [NSString stringWithFormat:@"%@%%", rottenTomatoes.critic];
-            }
-            else {
-                rating = [NSString stringWithFormat:@"%@%%", rottenTomatoes.critic];
-            }}
-                
-            CGSize textSize = [rating sizeWithAttributes:@{NSFontAttributeName:font}];
-    
-            NSString *imagePath = [bundle pathForResource:@"tomato" ofType:@"png"];
-            UIImage *tomato = [UIImage imageWithContentsOfFile:imagePath];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //UI Thread - If we got here, the overlay doesn't exist so add it.
+            
+            //Make virtualization hasn't changed; if so, let other event handle it
+            if([title isEqualToString:[self title]])
+            {
+                UIImageView *overlay=(UIImageView *)[ImageView viewWithTag:TAG];
+                if(overlay==nil){
+                    overlay = [[[UIImageView alloc] initWithImage:overlayImage] autorelease];
+                    overlay.tag = TAG;
+                    overlay.frame = CGRectMake(0,ImageView.frame.size.height-overlayImage.size.height,
+                                               overlayImage.size.width, overlayImage.size.height);
+                    overlay.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
                     
-            float y=img.size.height-tomato.size.height-margin;
-            [tomato drawAtPoint:CGPointMake(margin,y)];
-                     
-            //Rating Text
-            x+=padding;
-            y=img.size.height - tomato.size.height/2 - textSize.height/2;
-            
-            float textX = x + (tomato.size.width/2 - textSize.width/2);
-            if(textX < 0)
-                textX=0;
-            
-            [rating drawAtPoint:CGPointMake(textX, y)
-                 withAttributes:@{NSFontAttributeName:font,
-                                  NSForegroundColorAttributeName:[UIColor whiteColor],
-                                  NSShadowAttributeName:shadow}];
-            
-            x+=tomato.size.width;
-        }
-
-        imdbRatings imdb;
-        if(enableIMDBrating || enableIMDBmeta)
-        {
-            imdb = getImdbRating(title);
-            
-            NSLog(@"%@ %@", imdb.imdbRating, imdb.Metascore);
-            
-            if(imdb.imdbRating==nil) {
-                enableIMDBrating=NO;
-            }
-            
-            if(imdb.Metascore==nil) {
-                enableIMDBmeta=NO;
-            }
-
-        }
-        
-        if(enableIMDBrating || enableIMDBmeta)
-        {
-            if(enableIMDBrating && enableIMDBmeta) {
-                rating = [NSString stringWithFormat:@"%@/%@", imdb.imdbRating, imdb.Metascore];
-            }
-            else { if(enableIMDBrating) {
-                    rating = [NSString stringWithFormat:@"%@", imdb.imdbRating];
-            }
-            else {
-                rating = [NSString stringWithFormat:@"%@%%", imdb.Metascore];
-            }}
-                
-            CGSize textSize = [rating sizeWithAttributes:@{NSFontAttributeName:font}];
+                    UIGraphicsEndImageContext();
                     
-            float y=img.size.height-textSize.height-12;
-            CGRect rect = CGRectMake(x,y,textSize.width+8,textSize.height+8);
-            [[UIColor yellowColor] setFill];
-            CGContextSetAlpha(context,0.95);
-            [[UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:8.0] fill];
-            CGContextSetAlpha(context,1.0);
-            
-            //Rating Text
-            shadow.shadowColor = [UIColor whiteColor];
-            [rating drawAtPoint:CGPointMake(x+4, y+4)
-                 withAttributes:@{NSFontAttributeName:font,
-                                  NSForegroundColorAttributeName:[UIColor blackColor],
-                                  NSShadowAttributeName:shadow}];
-        }
-        
-        ImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    }
+                    [ImageView addSubview:overlay];
+                }
+                else {
+                    overlay.image=overlayImage;
+                }
+            }
+        });
+    });
 }
 %end
+
+/* -- Work in Progress
+static NSString *detailTitleLastLoaded=nil;
+%hook VideosMovieDetailViewController
+-(id)tableView:(id)view cellForRowAtIndexPath:(id)indexPath {
+    NSIndexPath *index = indexPath;
+    VideosMovieDetailCell *detailCell=%orig;
+    if(index.row==0){
+        //arbitrarily added rating to the first details section
+        UIView *content=detailCell.contentView;
+        
+        UILabel *text = nil;
+        for(id subview in [content subviews]){
+            if([NSStringFromClass([subview class]) compare:@"UITableViewLabel"]==NSOrderedSame){
+                text=(UILabel*)subview;
+            }
+        }
+        if(text!=nil){
+            NSMutableString *ratings = [[NSMutableString alloc] init];
+            [ratings appendString:@"["];
+            NSValue *RTvalue=[rtRatingDictionary objectForKey:detailTitleLastLoaded];
+            NSValue *IMDBvalue=[imdbRatingDictionary objectForKey:detailTitleLastLoaded];
+            
+            if(RTvalue!=nil) {
+                rottenTomatoRatings rt;
+                [RTvalue getValue:&rt];
+                [ratings appendString:[NSString stringWithFormat:@"Rotten Tomatoes critic:%.0f%%, audience:%.0f%%", rt.critic, rt.audience]];
+                if(IMDBvalue!=nil){
+                    [ratings appendString:@" "];
+                }
+            }
+            
+            if(IMDBvalue!=nil) {
+                imdbRatings imdb;
+                [IMDBvalue getValue:&imdb];
+                [ratings appendString:[NSString stringWithFormat:@"IMDB rating:%.1f, MetaScore:%.0f%%", imdb.imdbRating, imdb.Metascore]];
+            }
+            [ratings appendString:@"]\n"];
+            
+            text.text=[ratings stringByAppendingString:text.text];
+        }
+    }
+    return detailCell;
+}
+
+-(float)tableView:(id)view heightForRowAtIndexPath:(id)indexPath {
+    float h=%orig;
+    if(((NSIndexPath*)indexPath).row==0){
+        h+=10; //Add an unmeasured abitrary buffer to allow the rating line.
+    }
+    return h; }
+
+-(id)initWithMediaItem:(id)mediaItem {
+    MPMediaItem *item=mediaItem;
+    //Store away the title, so we have it when we load the top cell data [assumption: this is called first].
+    detailTitleLastLoaded=[item valueForKey:@"title"];
+    
+    id r = %orig;
+    return r;
+}
+%end
+*/
+
+
